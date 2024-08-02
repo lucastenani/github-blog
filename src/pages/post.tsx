@@ -1,11 +1,9 @@
 import {
-  Building,
   CalendarDots,
   CaretLeft,
   ChatCircle,
   GithubLogo,
   Link as LinkIcon,
-  Users,
 } from '@phosphor-icons/react'
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
@@ -30,13 +28,13 @@ export function Post() {
               <div className="flex items-center justify-between gap-1">
                 <Link
                   to={'/'}
-                  className="flex cursor-pointer items-center gap-1 font-semibold uppercase text-primary hover:opacity-75"
+                  className="flex cursor-pointer items-center gap-1 font-semibold uppercase text-primary hover:underline hover:opacity-75"
                 >
                   <CaretLeft size={18} />
                   return
                 </Link>
                 <a
-                  className="flex cursor-pointer items-center gap-1 font-semibold uppercase text-primary hover:opacity-75"
+                  className="flex cursor-pointer items-center gap-1 font-semibold uppercase text-primary hover:underline hover:opacity-75"
                   href="https://github.com/lucastenani"
                   target="_blank"
                   rel="noopener noreferrer"

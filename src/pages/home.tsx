@@ -29,7 +29,7 @@ export function Home() {
         <section>
           <Card className="flex flex-col md:flex-row md:items-center md:p-4">
             <img
-              className="md:max max-w-lg rounded-t-lg md:h-48 md:max-w-48 md:rounded-lg"
+              className="w-full rounded-t-lg md:h-48 md:max-w-48 md:rounded-lg"
               src="https://avatars.githubusercontent.com/u/75996842?v=4"
               alt="lucastenani profile avatar"
             />
@@ -38,7 +38,7 @@ export function Home() {
                 <CardTitle>Lucas Tenani</CardTitle>
                 <CardDescription>
                   <a
-                    className="flex cursor-pointer items-center gap-1 font-semibold uppercase text-primary hover:opacity-75"
+                    className="flex cursor-pointer items-center gap-1 font-semibold uppercase text-primary hover:underline hover:opacity-75"
                     href="https://github.com/lucastenani"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -91,8 +91,8 @@ export function Home() {
             return (
               <Link key={i} to={'/post/1'}>
                 <Card>
-                  <CardHeader>
-                    <CardTitle className="text-xl">
+                  <CardHeader className="md:flex md:flex-row md:flex-wrap md:justify-between md:gap-2">
+                    <CardTitle className="text-xl md:max-w-xs">
                       JavaScript data types and data structures
                     </CardTitle>
                     <CardDescription>1 day ago</CardDescription>
