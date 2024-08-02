@@ -5,9 +5,11 @@ import {
   GithubLogo,
   Link as LinkIcon,
 } from '@phosphor-icons/react'
+import { useQuery } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 
+import { getUser } from '@/api/get-user'
 import {
   Card,
   CardContent,
@@ -17,6 +19,11 @@ import {
 } from '@/components/ui/card'
 
 export function Post() {
+  const { data: profile } = useQuery({
+    queryKey: ['profile'],
+    queryFn: getUser,
+  })
+
   return (
     <>
       <Helmet title="Post" />
@@ -50,16 +57,16 @@ export function Post() {
               </CardTitle>
             </CardContent>
             <CardFooter className="flex flex-col items-start md:flex-row md:flex-wrap md:gap-4">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <GithubLogo size={20} />
-                <p>lucastenani</p>
+              <div className="flex items-center gap-2">
+                <GithubLogo size={20} className="text-muted-foreground" />
+                {profile?.login}
               </div>
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <CalendarDots size={20} />
+              <div className="flex items-center gap-2">
+                <CalendarDots size={20} className="text-muted-foreground" />
                 <p>1 day ago</p>
               </div>
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <ChatCircle size={20} />
+              <div className="flex items-center gap-2">
+                <ChatCircle size={20} className="text-muted-foreground" />
                 <p> 5 comments</p>
               </div>
             </CardFooter>

@@ -60,16 +60,16 @@ export function Home() {
                 <p className="text-muted-foreground">{profile?.bio}</p>
               </CardContent>
               <CardFooter className="flex flex-col items-start md:flex-row md:flex-wrap md:gap-4">
-                <div className="flex items-center gap-2 text-muted-foreground">
-                  <GithubLogo size={20} />
+                <div className="flex items-center gap-2">
+                  <GithubLogo size={20} className="text-muted-foreground" />
                   {profile?.login}
                 </div>
-                <div className="flex items-center gap-2 text-muted-foreground">
-                  <MapPin size={20} />
+                <div className="flex items-center gap-2">
+                  <MapPin size={20} className="text-muted-foreground" />
                   {profile?.location}
                 </div>
-                <div className="flex items-center gap-2 text-muted-foreground">
-                  <Users size={20} />
+                <div className="flex items-center gap-2">
+                  <Users size={20} className="text-muted-foreground" />
                   {profile?.followers} followers
                 </div>
               </CardFooter>
