@@ -7,11 +7,11 @@ import logoPath from '@/assets/logo.svg'
 export function AppLayout() {
   return (
     <div className="w-screen">
-      <header className="hidden w-full items-center justify-between bg-blue-950 lg:flex lg:py-8">
+      <header className="hidden w-full items-center justify-between bg-blue-950 md:flex md:py-8">
         <img
-          // className="h-[45px] w-[40px]"
           src={effectPath}
           alt="Effect Image"
+          className="h-auto max-w-full md:max-w-[409px]"
         />
 
         <div className="flex flex-col items-center justify-center gap-3">
@@ -20,19 +20,19 @@ export function AppLayout() {
             src={logoPath}
             alt="GitHub Blog Logo"
           />
-          <h1 className="text-primary text-2xl font-bold uppercase">
+          <h1 className="text-2xl font-bold uppercase text-primary">
             GitHub Blog
           </h1>
         </div>
 
         <img
-          // className="h-[45px] w-[40px]"
           src={effect2Path}
           alt="Effect Image"
+          className="h-auto max-w-full md:max-w-[371]"
         />
       </header>
 
-      <main className="container mx-auto w-screen p-6 lg:-mt-14 lg:w-1/2 lg:px-4">
+      <main className="container mx-auto w-screen px-4 pb-10 pt-2 md:-mt-16 md:px-4 lg:w-1/2">
         <Outlet />
       </main>
     </div>
