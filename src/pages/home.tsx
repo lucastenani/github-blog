@@ -1,12 +1,14 @@
 import {
-  Building,
   GithubLogo,
   Link as LinkIcon,
+  MapPin,
   Users,
 } from '@phosphor-icons/react'
+import { useQuery } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 
+import { getUser } from '@/api/get-user'
 import {
   Card,
   CardContent,
@@ -18,9 +20,15 @@ import {
 import { Input } from '@/components/ui/input'
 
 export function Home() {
+  const { data: profile } = useQuery({
+    queryKey: ['profile'],
+    queryFn: getUser,
+  })
+
   function concatString(text: string) {
     return text.length > 180 ? text.substring(0, 181).concat('...') : text
   }
+
   return (
     <>
       <Helmet title="Home" />
@@ -30,16 +38,16 @@ export function Home() {
           <Card className="flex flex-col md:flex-row md:items-center md:p-4">
             <img
               className="w-full rounded-t-lg md:h-48 md:max-w-48 md:rounded-lg"
-              src="https://avatars.githubusercontent.com/u/75996842?v=4"
-              alt="lucastenani profile avatar"
+              src={profile?.avatar_url}
+              alt={`${profile?.login} profile avatar`}
             />
             <div className="md:flex-1">
               <CardHeader className="md:flex-row md:flex-wrap md:items-center md:justify-between">
-                <CardTitle>Lucas Tenani</CardTitle>
+                <CardTitle>{profile?.name}</CardTitle>
                 <CardDescription>
                   <a
                     className="flex cursor-pointer items-center gap-1 font-semibold uppercase text-primary hover:underline hover:opacity-75"
-                    href="https://github.com/lucastenani"
+                    href={`https://github.com/${profile?.login}`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -49,23 +57,20 @@ export function Home() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground">
-                  Hello! I'm Lucas Tenani, a passionate front-end developer
-                  focused on React.
-                </p>
+                <p className="text-muted-foreground">{profile?.bio}</p>
               </CardContent>
               <CardFooter className="flex flex-col items-start md:flex-row md:flex-wrap md:gap-4">
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <GithubLogo size={20} />
-                  <p>lucastenani</p>
+                  {profile?.login}
                 </div>
                 <div className="flex items-center gap-2 text-muted-foreground">
-                  <Building size={20} />
-                  <p>Brazil</p>
+                  <MapPin size={20} />
+                  {profile?.location}
                 </div>
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <Users size={20} />
-                  <p> 9 followers</p>
+                  {profile?.followers} followers
                 </div>
               </CardFooter>
             </div>
