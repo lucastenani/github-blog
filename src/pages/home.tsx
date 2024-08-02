@@ -8,6 +8,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 
+import { getIssues } from '@/api/get-issues'
 import { getUser } from '@/api/get-user'
 import {
   Card,
@@ -25,8 +26,17 @@ export function Home() {
     queryFn: getUser,
   })
 
-  function concatString(text: string) {
-    return text.length > 180 ? text.substring(0, 181).concat('...') : text
+  const { data: issues } = useQuery({
+    queryKey: ['issues'],
+    queryFn: getIssues,
+  })
+
+  function concatString(text: string, textType: 'title' | 'body'): string {
+    if (textType === 'title') {
+      return text.length > 30 ? text.substring(0, 30).concat('...') : text
+    }
+
+    return text.length > 160 ? text.substring(0, 160).concat('...') : text
   }
 
   return (
@@ -81,7 +91,7 @@ export function Home() {
           <div className="mb-4 md:flex md:items-center md:justify-between">
             <h2 className="text-2xl">Publications</h2>
             <span className="text-sm text-muted-foreground">
-              6 publications
+              {issues?.total_count} publications
             </span>
           </div>
 
@@ -92,20 +102,18 @@ export function Home() {
         </section>
 
         <section className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          {Array.from({ length: 8 }).map((_, i) => {
+          {issues?.items.map((issue) => {
             return (
-              <Link key={i} to={'/post/1'}>
-                <Card className="hover:opacity-85">
+              <Link key={issue.id} to={`/post/${issue.number}`}>
+                <Card className="hover:opacity-85 md:h-[265px]">
                   <CardHeader className="md:flex md:flex-row md:flex-wrap md:justify-between md:gap-2">
                     <CardTitle className="text-xl md:max-w-xs">
-                      JavaScript data types and data structures
+                      {concatString(issue.title, 'title')}
                     </CardTitle>
-                    <CardDescription>1 day ago</CardDescription>
+                    <CardDescription>{issue.created_at}</CardDescription>
                   </CardHeader>
-                  <CardContent className="text-muted-foreground">
-                    {concatString(
-                      'Programming languages all have built-in data structures, but these often differ from one language to another. This article attempts to list the built-in data structures available in',
-                    )}
+                  <CardContent className="break-words text-muted-foreground">
+                    {concatString(issue.body, 'body')}
                   </CardContent>
                 </Card>
               </Link>
