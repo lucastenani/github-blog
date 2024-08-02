@@ -90,7 +90,7 @@ export function Home() {
           {Array.from({ length: 8 }).map((_, i) => {
             return (
               <Link key={i} to={'/post/1'}>
-                <Card>
+                <Card className="hover:opacity-85">
                   <CardHeader className="md:flex md:flex-row md:flex-wrap md:justify-between md:gap-2">
                     <CardTitle className="text-xl md:max-w-xs">
                       JavaScript data types and data structures

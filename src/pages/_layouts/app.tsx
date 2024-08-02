@@ -32,7 +32,7 @@ export function AppLayout() {
         />
       </header>
 
-      <main className="container mx-auto w-screen px-4 pb-96 pt-2 md:-mt-10 md:px-4 md:pb-40 lg:-mt-16 lg:w-1/2">
+      <main className="container mx-auto w-screen px-4 pb-96 pt-2 md:-mt-10 md:w-4/5 md:px-4 md:pb-40 lg:-mt-16 lg:w-1/2">
         <Outlet />
       </main>
     </div>
