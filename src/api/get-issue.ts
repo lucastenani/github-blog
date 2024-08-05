@@ -66,8 +66,14 @@ type Issue = {
   state_reason: string | null
 }
 
-export async function getIssue() {
-  const response = await api.get<Issue>('/repos/frontendbr/vagas/issues/1')
+export interface GetIssueParams {
+  issueId: string | undefined
+}
+
+export async function getIssue({ issueId }: GetIssueParams) {
+  const response = await api.get<Issue>(
+    `/repos/frontendbr/vagas/issues/${issueId}`,
+  )
 
   return response.data
 }

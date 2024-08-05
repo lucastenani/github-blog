@@ -10,7 +10,7 @@ import { formatDistanceToNow } from 'date-fns'
 import { enUS } from 'date-fns/locale'
 import { Helmet } from 'react-helmet-async'
 import Markdown from 'react-markdown'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import remarkGfm from 'remark-gfm'
 
 import { getIssue } from '@/api/get-issue'
@@ -26,14 +26,15 @@ import {
 import { PostSkeleton } from './skeleton'
 
 export function Post() {
+  const { id: issueId } = useParams()
   const { data: profile, isFetched: isFetchedProfile } = useQuery({
     queryKey: ['profile'],
     queryFn: getUser,
   })
 
   const { data: issue, isFetched: isFetchedIssue } = useQuery({
-    queryKey: ['issue'],
-    queryFn: getIssue,
+    queryKey: ['issue', issueId],
+    queryFn: () => getIssue({ issueId }),
   })
 
   return (
