@@ -72,10 +72,16 @@ interface GitHubIssuesResponse {
   items: Issue[]
 }
 
-export async function getIssues() {
-  const response = await api.get<GitHubIssuesResponse>(
-    '/search/issues?q=%20repo:frontendbr/vagas&state:open&sort=created&order=desc&per_page=10&page=1',
-  )
+interface GetIssuesParams {
+  pageIndex?: number | null
+  query?: string | null
+}
+
+export async function getIssues({ pageIndex, query }: GetIssuesParams) {
+  const cleanQuery = query || '%20' // Usar '%20' como padrão se query for nulo ou indefinido
+  const url = `/search/issues?q=${cleanQuery}+state:open+repo:frontendbr/vagas&sort=created&order=desc&per_page=8&page=${pageIndex}`
+
+  const response = await api.get<GitHubIssuesResponse>(url)
 
   return response.data
 }

@@ -6,6 +6,8 @@ import {
   Link as LinkIcon,
 } from '@phosphor-icons/react'
 import { useQuery } from '@tanstack/react-query'
+import { formatDistanceToNow } from 'date-fns'
+import { enUS } from 'date-fns/locale'
 import { Helmet } from 'react-helmet-async'
 import Markdown from 'react-markdown'
 import { Link } from 'react-router-dom'
@@ -71,8 +73,11 @@ export function Post() {
                   {profile?.login}
                 </div>
                 <div className="flex items-center gap-2">
-                  <CalendarDots size={20} className="text-muted-foreground" />1
-                  day ago
+                  <CalendarDots size={20} className="text-muted-foreground" />
+                  {formatDistanceToNow(issue?.created_at, {
+                    locale: enUS,
+                    addSuffix: true,
+                  })}
                 </div>
                 <div className="flex items-center gap-2">
                   <ChatCircle size={20} className="text-muted-foreground" />

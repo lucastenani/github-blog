@@ -5,8 +5,11 @@ import {
   Users,
 } from '@phosphor-icons/react'
 import { useQuery } from '@tanstack/react-query'
+import { formatDistanceToNow } from 'date-fns'
+import { enUS } from 'date-fns/locale'
 import { Helmet } from 'react-helmet-async'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
+import { z } from 'zod'
 
 import { getIssues } from '@/api/get-issues'
 import { getUser } from '@/api/get-user'
@@ -24,22 +27,34 @@ import { Input } from '@/components/ui/input'
 import { HomeSkeleton } from './skeleton'
 
 export function Home() {
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  const pageIndex = z.coerce.number().parse(searchParams.get('page') ?? 1)
+
   const { data: profile, isFetched: isFetchedProfile } = useQuery({
     queryKey: ['profile'],
     queryFn: getUser,
   })
 
-  const { data: issues, isFetched: isFetchedIssues } = useQuery({
-    queryKey: ['issues'],
-    queryFn: getIssues,
+  const { data: result, isFetched: isFetchedIssues } = useQuery({
+    queryKey: ['issues', pageIndex],
+    queryFn: () => getIssues({ pageIndex }),
   })
 
   function concatString(text: string, textType: 'title' | 'body'): string {
     if (textType === 'title') {
-      return text.length > 30 ? text.substring(0, 30).concat('...') : text
+      return text.length > 20 ? text.substring(0, 20).concat('...') : text
     }
 
     return text.length > 160 ? text.substring(0, 160).concat('...') : text
+  }
+
+  function handlePaginate(pageIndex: number) {
+    setSearchParams((state) => {
+      state.set('page', pageIndex.toString())
+
+      return state
+    })
   }
 
   return (
@@ -95,7 +110,7 @@ export function Home() {
             <div className="mb-4 md:flex md:items-center md:justify-between">
               <h2 className="text-2xl">Publications</h2>
               <span className="text-sm text-muted-foreground">
-                {issues?.total_count} publications
+                {result?.total_count} publications
               </span>
             </div>
 
@@ -106,25 +121,39 @@ export function Home() {
           </section>
 
           <section className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            {issues?.items.map((issue) => {
-              return (
-                <Link key={issue.id} to={`/post/${issue.number}`}>
-                  <Card className="hover:opacity-85 md:h-[265px]">
-                    <CardHeader className="md:flex md:flex-row md:flex-wrap md:justify-between md:gap-2">
-                      <CardTitle className="text-xl md:max-w-xs">
-                        {concatString(issue.title, 'title')}
-                      </CardTitle>
-                      <CardDescription>{issue.created_at}</CardDescription>
-                    </CardHeader>
-                    <CardContent className="break-words text-muted-foreground">
-                      {concatString(issue.body, 'body')}
-                    </CardContent>
-                  </Card>
-                </Link>
-              )
-            })}
+            {result &&
+              result.items.map((issue) => {
+                return (
+                  <Link key={issue.id} to={`/post/${issue.number}`}>
+                    <Card className="hover:opacity-85 md:h-[265px]">
+                      <CardHeader className="space-y-2">
+                        <CardTitle className="text-xl md:max-w-xs">
+                          {concatString(issue.title, 'title')}
+                        </CardTitle>
+                        <CardDescription>
+                          {formatDistanceToNow(issue.created_at, {
+                            locale: enUS,
+                            addSuffix: true,
+                          })}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="break-words text-muted-foreground">
+                        {concatString(issue.body, 'body')}
+                      </CardContent>
+                    </Card>
+                  </Link>
+                )
+              })}
           </section>
-          <Pagination pageIndex={0} perPage={10} totalCount={105} />
+
+          {result && (
+            <Pagination
+              pageIndex={pageIndex}
+              perPage={8}
+              totalCount={result?.total_count}
+              onPageChange={handlePaginate}
+            />
+          )}
         </div>
       ) : (
         <HomeSkeleton />

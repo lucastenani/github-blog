@@ -53,7 +53,7 @@ type Issue = {
   assignees: User[]
   milestone: string | null
   comments: number
-  created_at: string
+  created_at: string | Date
   updated_at: string
   closed_at: string | null
   author_association: string
