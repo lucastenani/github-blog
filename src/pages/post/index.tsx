@@ -43,7 +43,7 @@ export function Post() {
           <section>
             <Card>
               <CardHeader>
-                <div className="flex items-center justify-between gap-1">
+                <div className="flex flex-wrap items-center justify-between gap-1">
                   <Link
                     to={'/'}
                     className="flex cursor-pointer items-center gap-1 font-semibold uppercase text-primary hover:underline hover:opacity-75"
