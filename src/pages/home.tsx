@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom'
 
 import { getIssues } from '@/api/get-issues'
 import { getUser } from '@/api/get-user'
+import { Pagination } from '@/components/pagination'
 import {
   Card,
   CardContent,
@@ -120,6 +121,7 @@ export function Home() {
             )
           })}
         </section>
+        <Pagination pageIndex={0} perPage={10} totalCount={105} />
       </div>
     </>
   )
