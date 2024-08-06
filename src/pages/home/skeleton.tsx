@@ -5,6 +5,7 @@ import {
   Users,
 } from '@phosphor-icons/react'
 
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -63,7 +64,21 @@ export function HomeSkeleton() {
           <Skeleton className="h-[20px] w-2/3 rounded-full md:w-[150px]" />
         </div>
 
-        <Input placeholder="Search content" disabled />
+        <form className="flex flex-col items-center gap-2 md:flex-row">
+          <Input
+            placeholder="Search content"
+            className="focus:border-primary"
+            disabled
+          />
+          <Button
+            type="submit"
+            variant={'outline'}
+            className="h-11 w-full rounded-md px-8 hover:border-primary md:max-w-32"
+            disabled
+          >
+            Search
+          </Button>
+        </form>
       </section>
 
       <section className="grid grid-cols-1 gap-6 md:grid-cols-2">
