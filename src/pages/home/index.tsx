@@ -58,7 +58,7 @@ export function Home() {
 
   function concatString(text: string, textType: 'title' | 'body'): string {
     if (textType === 'title') {
-      return text.length > 20 ? text.substring(0, 20).concat('...') : text
+      return text.length > 40 ? text.substring(0, 40).concat('...') : text
     }
 
     return text.length > 160 ? text.substring(0, 160).concat('...') : text
@@ -145,14 +145,18 @@ export function Home() {
 
             <form
               onSubmit={handleSubmit(handleFilter)}
-              className="flex flex-col items-center justify-center gap-2 md:flex-row"
+              className="flex flex-col items-center gap-2 md:flex-row"
             >
               <Input
                 placeholder="Search content"
                 className="focus:border-primary"
                 {...register('query')}
               />
-              <Button type="submit" variant={'outline'} className="h-full">
+              <Button
+                type="submit"
+                variant={'outline'}
+                className="h-11 w-full rounded-md px-8 hover:border-primary md:max-w-32"
+              >
                 Search
               </Button>
             </form>
@@ -163,7 +167,7 @@ export function Home() {
               result.items.map((issue) => {
                 return (
                   <Link key={issue.id} to={`/post/${issue.number}`}>
-                    <Card className="hover:opacity-85 md:h-[265px]">
+                    <Card className="hover:opacity-85 md:h-80">
                       <CardHeader className="space-y-2">
                         <CardTitle className="text-xl md:max-w-xs">
                           {concatString(issue.title, 'title')}
