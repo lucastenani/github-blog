@@ -6,7 +6,9 @@ import { Pagination } from './pagination'
 const onPageChangeCallback = vi.fn()
 
 describe('Pagination', () => {
-  // beforeEach(() => {})
+  beforeEach(() => {
+    onPageChangeCallback.mockClear()
+  })
 
   it('should display the right amount of pages and results', () => {
     const wrapper = render(
