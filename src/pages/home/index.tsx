@@ -192,7 +192,7 @@ export function Home() {
             <Pagination
               pageIndex={pageIndex}
               perPage={8}
-              totalCount={result?.total_count}
+              totalCount={result.total_count}
               onPageChange={handlePaginate}
             />
           )}

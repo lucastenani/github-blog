@@ -25,7 +25,7 @@ export function Pagination({
   return (
     <div className="flex items-center justify-between">
       <span className="text-sm text-muted-foreground">
-        Total of {totalCount} item{totalCount > 1 && 's'}
+        Total of {totalCount} item{totalCount !== 1 && 's'}
       </span>
 
       <div className="flex items-center gap-6 lg:gap-8">
@@ -40,7 +40,7 @@ export function Pagination({
             disabled={pageIndex === 1}
           >
             <CaretDoubleLeft className="h-4 w-4" />
-            <span className="sr-only">First Page</span>
+            <span className="sr-only">First page</span>
           </Button>
           <Button
             onClick={() => onPageChange(pageIndex - 1)}
