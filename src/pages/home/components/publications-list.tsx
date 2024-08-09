@@ -3,10 +3,10 @@ import { useQuery } from '@tanstack/react-query'
 import { formatDistanceToNow } from 'date-fns'
 import { enUS } from 'date-fns/locale'
 import { useForm } from 'react-hook-form'
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { z } from 'zod'
 
-import { getIssues } from '@/api/get-issues'
+import { getIssues, useUrlSearchParams } from '@/api/get-issues'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -19,22 +19,25 @@ import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
 
 const issuesFilterSchema = z.object({
-  query: z.string().optional(),
+  query: z.string().min(1, 'Search must be at least 1 character long'),
 })
 
 type IssuesFilterSchema = z.infer<typeof issuesFilterSchema>
 
 export function PublicationsList() {
-  const [searchParams, setSearchParams] = useSearchParams()
-  const pageIndex = z.coerce.number().parse(searchParams.get('page') ?? 1)
-  const query = searchParams.get('query')
+  const { pageIndex, query, setSearchParams } = useUrlSearchParams()
 
   const { data: result, isFetched: isFetchedIssues } = useQuery({
     queryKey: ['issues', pageIndex, query],
     queryFn: () => getIssues({ pageIndex, query }),
   })
 
-  const { register, handleSubmit } = useForm<IssuesFilterSchema>({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<IssuesFilterSchema>({
     resolver: zodResolver(issuesFilterSchema),
     defaultValues: { query: query || '' },
   })
@@ -52,6 +55,16 @@ export function PublicationsList() {
     })
   }
 
+  function handleClearFilter() {
+    setSearchParams((state) => {
+      state.delete('query')
+      state.set('page', '1')
+      return state
+    })
+
+    reset({ query: '' })
+  }
+
   return isFetchedIssues ? (
     <>
       <section>
@@ -64,19 +77,39 @@ export function PublicationsList() {
 
         <form
           onSubmit={handleSubmit(handleFilter)}
-          className="flex flex-col items-center gap-2 md:flex-row"
+          className="flex flex-col items-start justify-center gap-2 md:flex-row"
         >
-          <Input
-            placeholder="Search content"
-            className="focus:border-primary"
-            {...register('query')}
-          />
+          <div className="w-full flex-1">
+            <Input
+              placeholder="Search content"
+              className={
+                errors.query
+                  ? 'focus-visible:ring-error-color border-destructive'
+                  : 'focus:border-primary'
+              }
+              {...register('query')}
+            />
+
+            {errors.query && (
+              <span className="text-sm text-destructive">
+                {errors.query.message}
+              </span>
+            )}
+          </div>
           <Button
             type="submit"
-            variant={'outline'}
-            className="h-11 w-full rounded-md px-8 hover:border-primary md:max-w-32"
+            variant={'default'}
+            className="h-8 w-full rounded-md px-8 hover:border-primary md:h-10 md:max-w-32"
           >
             Search
+          </Button>
+          <Button
+            type="reset"
+            variant={'outline'}
+            className="h-8 w-full rounded-md px-8 hover:border-primary md:h-10 md:max-w-32"
+            onClick={handleClearFilter}
+          >
+            Clear filter
           </Button>
         </form>
       </section>
@@ -122,11 +155,19 @@ export function PublicationsList() {
           />
           <Button
             type="submit"
-            variant={'outline'}
-            className="h-11 w-full rounded-md px-8 hover:border-primary md:max-w-32"
+            variant={'default'}
+            className="h-8 w-full rounded-md px-8 hover:border-primary md:h-10 md:max-w-32"
             disabled
           >
             Search
+          </Button>
+          <Button
+            type="reset"
+            variant={'outline'}
+            className="h-8 w-full rounded-md px-8 hover:border-primary md:h-10 md:max-w-32"
+            disabled
+          >
+            Clear filter
           </Button>
         </form>
       </section>
@@ -134,10 +175,7 @@ export function PublicationsList() {
       <section className="grid grid-cols-1 gap-6 md:grid-cols-2">
         {Array.from({ length: 2 }).map((_, i) => {
           return (
-            <Skeleton
-              key={i}
-              className="h-[324px] w-full rounded-md md:h-[265px]"
-            />
+            <Skeleton key={i} className="h-[324px] w-full rounded-md md:h-80" />
           )
         })}
       </section>

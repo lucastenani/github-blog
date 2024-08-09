@@ -1,3 +1,6 @@
+import { useSearchParams } from 'react-router-dom'
+import { z } from 'zod'
+
 import { api } from '@/lib/axios'
 
 interface User {
@@ -78,10 +81,17 @@ interface GetIssuesParams {
 }
 
 export async function getIssues({ pageIndex, query }: GetIssuesParams) {
-  const cleanQuery = query || '%20' // Usar '%20' como padrão se query for nulo ou indefinido
-  const url = `/search/issues?q=${cleanQuery}+state:open+repo:frontendbr/vagas&sort=created&order=desc&per_page=8&page=${pageIndex}`
+  const cleanQuery = query || '%20'
+  const url = `/search/issues?q=${cleanQuery}+state:open+repo:frontendbr/vagas&sort=created&order=desc&per_page=10&page=${pageIndex}`
 
   const response = await api.get<GitHubIssuesResponse>(url)
-
   return response.data
+}
+
+export function useUrlSearchParams() {
+  const [searchParams, setSearchParams] = useSearchParams()
+  const pageIndex = z.coerce.number().parse(searchParams.get('page') ?? 1)
+  const query = searchParams.get('query')
+
+  return { pageIndex, query, setSearchParams }
 }

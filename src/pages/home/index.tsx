@@ -1,19 +1,14 @@
 import { useQuery } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
-import { useSearchParams } from 'react-router-dom'
-import { z } from 'zod'
 
-import { getIssues } from '@/api/get-issues'
+import { getIssues, useUrlSearchParams } from '@/api/get-issues'
 import { Pagination } from '@/components/pagination'
 
 import { GitHubProfile } from './components/github-profile'
 import { PublicationsList } from './components/publications-list'
 
 export function Home() {
-  const [searchParams, setSearchParams] = useSearchParams()
-
-  const pageIndex = z.coerce.number().parse(searchParams.get('page') ?? 1)
-  const query = searchParams.get('query')
+  const { pageIndex, query, setSearchParams } = useUrlSearchParams()
 
   const { data: result } = useQuery({
     queryKey: ['issues', pageIndex, query],
@@ -22,6 +17,7 @@ export function Home() {
 
   function handlePaginate(pageIndex: number) {
     setSearchParams({ page: pageIndex.toString() })
+    window.scrollTo(0, 0)
   }
 
   return (
@@ -34,7 +30,7 @@ export function Home() {
 
         <Pagination
           pageIndex={pageIndex}
-          perPage={8}
+          perPage={10}
           totalCount={result?.total_count || 0}
           onPageChange={handlePaginate}
         />
