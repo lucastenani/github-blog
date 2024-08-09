@@ -91,8 +91,6 @@ export async function getIssues({ pageIndex = 1, query }: GetIssuesParams) {
 
     if (items.length === 0) {
       toast.error('No results found')
-    } else {
-      toast.success('Search successful')
     }
 
     return response.data
