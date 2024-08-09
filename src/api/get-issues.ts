@@ -1,5 +1,6 @@
+import axios from 'axios'
 import { useSearchParams } from 'react-router-dom'
-import { z } from 'zod'
+import { toast } from 'sonner'
 
 import { api } from '@/lib/axios'
 
@@ -76,22 +77,42 @@ interface GitHubIssuesResponse {
 }
 
 interface GetIssuesParams {
-  pageIndex?: number | null
-  query?: string | null
+  pageIndex?: number
+  query?: string
 }
 
-export async function getIssues({ pageIndex, query }: GetIssuesParams) {
-  const cleanQuery = query || '%20'
-  const url = `/search/issues?q=${cleanQuery}+state:open+repo:frontendbr/vagas&sort=created&order=desc&per_page=10&page=${pageIndex}`
+export async function getIssues({ pageIndex = 1, query }: GetIssuesParams) {
+  const encodedQuery = query ? encodeURIComponent(query) : '%20'
+  const url = `/search/issues?q=${encodedQuery}+state:open+repo:frontendbr/vagas&sort=created&order=desc&per_page=10&page=${pageIndex}`
 
-  const response = await api.get<GitHubIssuesResponse>(url)
-  return response.data
+  try {
+    const response = await api.get<GitHubIssuesResponse>(url)
+    const { items } = response.data
+
+    if (items.length === 0) {
+      toast.error('No results found')
+    } else {
+      toast.success('Search successful')
+    }
+
+    return response.data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const errorMessage =
+        error.response?.status === 422
+          ? 'No results found'
+          : 'An error occurred. Please try again.'
+      toast.error(errorMessage)
+    } else {
+      toast.error('An unexpected error occurred.')
+    }
+  }
 }
 
 export function useUrlSearchParams() {
   const [searchParams, setSearchParams] = useSearchParams()
-  const pageIndex = z.coerce.number().parse(searchParams.get('page') ?? 1)
-  const query = searchParams.get('query')
+  const pageIndex = Number(searchParams.get('page')) || 1
+  const query = searchParams.get('query') ?? ''
 
   return { pageIndex, query, setSearchParams }
 }

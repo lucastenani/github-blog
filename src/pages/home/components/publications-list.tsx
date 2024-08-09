@@ -173,7 +173,7 @@ export function PublicationsList() {
       </section>
 
       <section className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        {Array.from({ length: 2 }).map((_, i) => {
+        {Array.from({ length: 4 }).map((_, i) => {
           return (
             <Skeleton key={i} className="h-[324px] w-full rounded-md md:h-80" />
           )
