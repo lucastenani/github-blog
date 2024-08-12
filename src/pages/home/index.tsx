@@ -29,8 +29,8 @@ export function Home() {
         <PublicationsList />
 
         <Pagination
-          pageIndex={pageIndex}
-          perPage={10}
+          pageIndex={0}
+          perPage={20}
           totalCount={result?.total_count || 0}
           onPageChange={handlePaginate}
         />
