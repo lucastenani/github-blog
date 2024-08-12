@@ -84,7 +84,7 @@ export function PublicationsList() {
               placeholder="Search content"
               className={
                 errors.query
-                  ? 'focus-visible:ring-error-color border-destructive'
+                  ? 'border-destructive focus-visible:ring-error-color'
                   : 'focus:border-primary'
               }
               {...register('query')}
