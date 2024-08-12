@@ -151,3 +151,71 @@ test('should open an issue', async ({ page }) => {
   await expect(pageInfoText).toBeVisible()
   await expect(card1).toBeVisible()
 })
+
+test('paginate issues', async ({ page }) => {
+  await page.goto('/')
+
+  await page.waitForSelector('input[placeholder="Search content"]', {
+    state: 'visible',
+  })
+
+  const firstPage = page.getByRole('button', { name: 'First page' })
+  const prevPage = page.getByRole('button', { name: 'Previous page' })
+  const nextPage = page.getByRole('button', { name: 'Next page' })
+  const lastPage = page.getByRole('button', { name: 'Last page' })
+
+  await expect(firstPage).toBeDisabled()
+  await expect(prevPage).toBeDisabled()
+  await expect(nextPage).not.toBeDisabled()
+  await expect(lastPage).not.toBeDisabled()
+  await expect(
+    page.locator('h3').filter({ hasText: 'Test Issue 10' }),
+  ).toBeVisible()
+
+  await expect(page.getByText('Page 1 of 6')).toBeVisible()
+
+  nextPage.click()
+  await page.waitForSelector('input[placeholder="Search content"]', {
+    state: 'visible',
+  })
+
+  await expect(firstPage).not.toBeDisabled()
+  await expect(prevPage).not.toBeDisabled()
+  await expect(nextPage).not.toBeDisabled()
+  await expect(lastPage).not.toBeDisabled()
+  await expect(
+    page.locator('h3').filter({ hasText: 'Test Issue 11' }),
+  ).toBeVisible()
+
+  await expect(page.getByText('Page 2 of 6')).toBeVisible()
+
+  lastPage.click()
+  await page.waitForSelector('input[placeholder="Search content"]', {
+    state: 'visible',
+  })
+
+  await expect(firstPage).not.toBeDisabled()
+  await expect(prevPage).not.toBeDisabled()
+  await expect(nextPage).toBeDisabled()
+  await expect(lastPage).toBeDisabled()
+  await expect(
+    page.locator('h3').filter({ hasText: 'Test Issue 60' }),
+  ).toBeVisible()
+
+  await expect(page.getByText('Page 6 of 6')).toBeVisible()
+
+  prevPage.click()
+  await page.waitForSelector('input[placeholder="Search content"]', {
+    state: 'visible',
+  })
+
+  await expect(firstPage).not.toBeDisabled()
+  await expect(prevPage).not.toBeDisabled()
+  await expect(nextPage).not.toBeDisabled()
+  await expect(lastPage).not.toBeDisabled()
+  await expect(
+    page.locator('h3').filter({ hasText: 'Test Issue 50' }),
+  ).toBeVisible()
+  await expect(page.getByText('Page 5 of 6')).toBeVisible()
+  await page.waitForTimeout(2000)
+})
