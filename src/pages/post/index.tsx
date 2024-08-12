@@ -75,10 +75,11 @@ export function Post() {
                 </div>
                 <div className="flex items-center gap-2">
                   <CalendarDots size={20} className="text-muted-foreground" />
-                  {formatDistanceToNow(issue?.created_at, {
-                    locale: enUS,
-                    addSuffix: true,
-                  })}
+                  {issue?.created_at &&
+                    formatDistanceToNow(issue.created_at, {
+                      locale: enUS,
+                      addSuffix: true,
+                    })}
                 </div>
                 <div className="flex items-center gap-2">
                   <ChatCircle size={20} className="text-muted-foreground" />

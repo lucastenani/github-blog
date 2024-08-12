@@ -4,6 +4,8 @@ import { toast } from 'sonner'
 
 import { api } from '@/lib/axios'
 
+import { SimpleIssue } from './mocks/publications-list-mock'
+
 interface User {
   login: string
   id: number
@@ -73,7 +75,7 @@ interface Issue {
 export interface GetIssuesResponse {
   total_count: number
   incomplete_results: boolean
-  items: Issue[]
+  items: Issue[] | SimpleIssue[]
 }
 
 interface GetIssuesParams {

@@ -2,7 +2,7 @@ import { http, HttpResponse } from 'msw'
 
 import { GetIssuesResponse } from '../get-issues'
 
-type SimpleIssue = {
+export type SimpleIssue = {
   id: number
   title: string
   body: string
