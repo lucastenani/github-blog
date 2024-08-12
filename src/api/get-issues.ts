@@ -70,7 +70,7 @@ interface Issue {
   score: number
 }
 
-interface GitHubIssuesResponse {
+export interface GetIssuesResponse {
   total_count: number
   incomplete_results: boolean
   items: Issue[]
@@ -86,7 +86,7 @@ export async function getIssues({ pageIndex = 1, query }: GetIssuesParams) {
   const url = `/search/issues?q=${encodedQuery}+state:open+repo:frontendbr/vagas&sort=created&order=desc&per_page=10&page=${pageIndex}`
 
   try {
-    const response = await api.get<GitHubIssuesResponse>(url)
+    const response = await api.get<GetIssuesResponse>(url)
     const { items } = response.data
 
     if (items.length === 0) {
