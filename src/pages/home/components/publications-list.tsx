@@ -71,7 +71,7 @@ export function PublicationsList() {
         <div className="mb-4 md:flex md:items-center md:justify-between">
           <h2 className="text-2xl">Publications</h2>
           <span className="text-sm text-muted-foreground">
-            {result?.total_count} publications
+            {result?.total_count} publication{result?.total_count !== 1 && 's'}
           </span>
         </div>
 
