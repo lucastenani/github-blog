@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test'
 test('Not found page', async ({ page }) => {
   await page.goto('/aaaaaaaaaaa')
 
-  const titlePage = page.getByRole('h1', { name: 'Page Not Found' })
+  const titlePage = page.getByText('Page Not Found')
   const textPage = page.getByText('Back to home')
   const homeLink = page.getByRole('link', { name: 'home' })
 
