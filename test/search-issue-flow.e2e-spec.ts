@@ -131,7 +131,7 @@ test('should open an issue', async ({ page }) => {
   await expect(card1).toBeVisible()
 })
 
-test('paginate issues', async ({ page }) => {
+test('paginate positions', async ({ page }) => {
   await page.goto('/')
 
   await page.waitForSelector('input[placeholder="Search content"]', {
@@ -197,4 +197,22 @@ test('paginate issues', async ({ page }) => {
   ).toBeVisible()
   await expect(page.getByText('Page 5 of 6')).toBeVisible()
   await page.waitForTimeout(2000)
+})
+
+test('paginate positions in search', async ({ page }) => {
+  await page.goto('/?page=1&query=Test')
+
+  await page.waitForSelector('input[placeholder="Search content"]', {
+    state: 'visible',
+  })
+
+  await page.getByRole('button', { name: 'Next page' }).click()
+  await page.waitForSelector('input[placeholder="Search content"]', {
+    state: 'visible',
+  })
+  expect(page.url()).toBe('http://localhost:50789/?page=2&query=Test')
+  await expect(
+    page.locator('h3').filter({ hasText: 'Test Issue 11' }),
+  ).toBeVisible()
+  await page.waitForTimeout(500)
 })

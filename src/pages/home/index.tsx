@@ -16,8 +16,18 @@ export function Home() {
   })
 
   function handlePaginate(pageIndex: number) {
-    setSearchParams({ page: pageIndex.toString() })
     window.scrollTo(0, 0)
+
+    setSearchParams((state) => {
+      if (query) {
+        state.set('query', query)
+      } else {
+        state.delete('query')
+      }
+
+      state.set('page', pageIndex.toString())
+      return state
+    })
   }
 
   return (
