@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 
-export function PostSkeleton() {
+export function PositionSkeleton() {
   return (
     <div className="space-y-10">
       <section>

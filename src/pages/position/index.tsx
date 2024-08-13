@@ -23,23 +23,45 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 
-import { PostSkeleton } from './skeleton'
+import { PositionSkeleton } from './skeleton'
 
-export function Post() {
+export function Position() {
   const { id: issueId } = useParams()
   const { data: profile, isFetched: isFetchedProfile } = useQuery({
     queryKey: ['profile'],
     queryFn: getUser,
   })
 
-  const { data: issue, isFetched: isFetchedIssue } = useQuery({
+  const {
+    data: issue,
+    isFetched: isFetchedIssue,
+    isError,
+  } = useQuery({
     queryKey: ['issue', issueId],
     queryFn: () => getIssue({ issueId }),
   })
 
+  if (isError) {
+    return (
+      <>
+        <Helmet title="Position Not Found :(" />
+
+        <section className="flex h-screen flex-col items-center justify-center gap-2">
+          <h1 className="text-4xl font-bold">Position Not Found</h1>
+          <p className="text-accent-foreground">
+            Back to{' '}
+            <Link className="text-primary hover:underline" to={'/'}>
+              home
+            </Link>
+          </p>
+        </section>
+      </>
+    )
+  }
+
   return (
     <>
-      <Helmet title="Post" />
+      <Helmet title={`Position ${issue?.number}`} />
 
       {isFetchedIssue && isFetchedProfile ? (
         <div className="space-y-10">
@@ -96,7 +118,7 @@ export function Post() {
           </section>
         </div>
       ) : (
-        <PostSkeleton />
+        <PositionSkeleton />
       )}
     </>
   )

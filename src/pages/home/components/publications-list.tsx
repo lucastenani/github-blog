@@ -117,7 +117,7 @@ export function PublicationsList() {
         {result &&
           result.items.map((issue) => {
             return (
-              <Link key={issue.id} to={`/post/${issue.number}`}>
+              <Link key={issue.id} to={`/position/${issue.number}`}>
                 <Card className="hover:opacity-85 md:h-80">
                   <CardHeader className="space-y-2">
                     <CardTitle className="text-xl md:max-w-xs">

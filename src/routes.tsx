@@ -4,7 +4,7 @@ import { AppLayout } from './pages/_layouts/app'
 import { NotFound } from './pages/404'
 import { Error } from './pages/error'
 import { Home } from './pages/home'
-import { Post } from './pages/post'
+import { Position } from './pages/position'
 
 export const router = createBrowserRouter([
   {
@@ -17,8 +17,8 @@ export const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: '/post/:id',
-        element: <Post />,
+        path: '/position/:id',
+        element: <Position />,
       },
     ],
   },
