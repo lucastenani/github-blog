@@ -1,3 +1,6 @@
+import axios from 'axios'
+import { toast } from 'sonner'
+
 import { api } from '@/lib/axios'
 
 type User = {
@@ -71,9 +74,21 @@ export interface GetIssueParams {
 }
 
 export async function getIssue({ issueId }: GetIssueParams) {
-  const response = await api.get<Issue>(
-    `/repos/frontendbr/vagas/issues/${issueId}`,
-  )
+  try {
+    const response = await api.get<Issue>(
+      `/repos/frontendbr/vagas/issues/${issueId}`,
+    )
 
-  return response.data
+    return response.data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const errorMessage =
+        error.response?.status === 404
+          ? 'Position does not exist :('
+          : 'An error occurred. Please try again.'
+      toast.error(errorMessage)
+    } else {
+      toast.error('An unexpected error occurred.')
+    }
+  }
 }

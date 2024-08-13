@@ -46,7 +46,7 @@ export function Position() {
       <>
         <Helmet title="Position Not Found :(" />
 
-        <section className="flex h-screen flex-col items-center justify-center gap-2">
+        <section className="flex h-screen flex-col items-center justify-center gap-2 md:h-full md:pt-12 lg:pt-36">
           <h1 className="text-4xl font-bold">Position Not Found</h1>
           <p className="text-accent-foreground">
             Back to{' '}
@@ -61,7 +61,7 @@ export function Position() {
 
   return (
     <>
-      <Helmet title={`Position ${issue?.number}`} />
+      <Helmet title="Position" />
 
       {isFetchedIssue && isFetchedProfile ? (
         <div className="space-y-10">

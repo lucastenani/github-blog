@@ -57,21 +57,3 @@ export const publicationsListMock = http.get<never, never, GetIssuesResponse>(
     })
   },
 )
-
-// ?q=${encodedQuery}+state:open+repo:frontendbr/vagas&sort=created&order=desc&per_page=10&page=${pageIndex}
-// items: [
-//   {
-//     id: 1,
-//     title: 'Issue de teste 1',
-//     body: 'Descrição da issue de teste 1',
-//     created_at: '2024-08-12T12:34:56Z',
-//     url: 'https://github.com/frontendbr/vagas/issues/1',
-//   },
-//   {
-//     id: 2,
-//     title: 'Issue de teste 2',
-//     body: 'Descrição da issue de teste 2',
-//     created_at: '2024-08-11T11:33:55Z',
-//     url: 'https://github.com/frontendbr/vagas/issues/2',
-//   },
-// ],

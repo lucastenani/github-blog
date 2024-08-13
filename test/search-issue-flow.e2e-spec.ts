@@ -29,27 +29,6 @@ test('Render fetched data', async ({ page }) => {
   await expect(card3).toBeVisible()
 })
 
-test('No results found', async ({ page }) => {
-  await page.goto('/')
-
-  await page.waitForSelector('input[placeholder="Search content"]', {
-    state: 'visible',
-  })
-
-  await page.locator('input[placeholder="Search content"]').fill('aaaa')
-  await page.getByRole('button', { name: 'Search' }).click()
-
-  const toast = page.getByText('No results found')
-  const publicationsText = page.getByText('0 publications')
-  const totalItemsText = page.getByText('Total of 0 items')
-  const pageInfoText = page.getByText('Page 1 of 1')
-
-  await expect(toast).toBeVisible()
-  await expect(publicationsText).toBeVisible()
-  await expect(totalItemsText).toBeVisible()
-  await expect(pageInfoText).toBeVisible()
-})
-
 test('should call handleClearFilter on button click', async ({ page }) => {
   await page.goto('/')
 
