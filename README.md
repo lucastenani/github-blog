@@ -7,9 +7,10 @@ The GitHub Issues Blog is a web application that leverages the GitHub API to fet
 ## GitHub Actions
 GitHub Actions have been implemented to run tests automatically. This ensures that the application remains robust and reliable by validating code changes in a continuous integration workflow.
 
-<!-- ## Project URL
+## Project URL
 
-- -->
+You can see the project in action [here](https://github-blog-rho-one.vercel.app/)
+
 ## Libraries Used
 
 - **react-hook-form**: For creating uncontrolled forms.
