@@ -33,6 +33,8 @@ jobs:
       name: github-pages
       url: ${{steps.deployment.outputs.page_url}}
     needs: test  
+    permissions:
+      id-token: write    
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
